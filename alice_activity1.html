@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>لنلخص معاً — Alice Programming</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Fira+Code:wght@500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g-dark:#064e3b;--g-mid:#065f46;--g-main:#047857;--g-light:#10b981;--g-pale:#d1fae5;
+  --amber:#f59e0b;--amber-pale:#fef3c7;
+  --blue-dark:#1e3a5f;--blue-light:#93c5fd;
+  --red:#dc2626;--red-pale:#fef2f2;
+  --white:#fff;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-400:#9ca3af;--gray-600:#4b5563;--gray-800:#1f2937;
+  --r-sm:6px;--r-md:10px;--r-lg:16px;--r-xl:24px;
+}
+html,body{min-height:100%;font-family:'Tajawal',sans-serif}
+body{
+  background:#0a2a1a;
+  background-image:
+    radial-gradient(ellipse at 20% 20%,rgba(4,120,87,.35) 0%,transparent 55%),
+    radial-gradient(ellipse at 80% 80%,rgba(6,79,54,.4) 0%,transparent 55%),
+    radial-gradient(ellipse at 60% 10%,rgba(16,185,129,.12) 0%,transparent 40%);
+  color:var(--gray-800);min-height:100vh;padding:16px 16px 48px;
+}
+.page-wrap{max-width:720px;margin:0 auto}
+
+/* ── Top bar ── */
+.top-bar{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:20px;gap:12px;
+}
+.hero{text-align:center;flex:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);
+  border-radius:999px;padding:5px 16px;font-size:12px;color:var(--g-light);
+  margin-bottom:12px;letter-spacing:.5px;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--g-light)}
+.hero-title{font-size:36px;font-weight:800;color:#fff;margin-bottom:4px;text-shadow:0 2px 20px rgba(16,185,129,.3)}
+.hero-title span{color:var(--g-light)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.45);font-family:'Fira Code',monospace}
+
+.btn-teacher{
+  display:flex;align-items:center;gap:7px;flex-shrink:0;
+  padding:10px 16px;margin-top:4px;
+  background:rgba(147,197,253,.1);
+  border:1.5px solid rgba(147,197,253,.3);
+  border-radius:var(--r-lg);
+  color:#93c5fd;font-size:13px;font-weight:700;
+  font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn-teacher:hover{background:rgba(147,197,253,.2);border-color:rgba(147,197,253,.6)}
+.btn-teacher svg{width:16px;height:16px;flex-shrink:0}
+.top-spacer{width:120px;flex-shrink:0}
+
+/* ── Cards ── */
+.card{background:#fff;border-radius:var(--r-lg);box-shadow:0 8px 30px rgba(0,0,0,.15);overflow:hidden;margin-bottom:16px}
+.card-header{padding:12px 16px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;gap:10px}
+.card-icon{width:30px;height:30px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-title{font-size:14px;font-weight:700;color:var(--gray-800)}
+.card-body{padding:14px 16px}
+
+/* ── Name ── */
+.name-row{display:flex;align-items:center;gap:10px}
+.name-lbl{font-size:13px;font-weight:500;color:var(--gray-600);white-space:nowrap;flex-shrink:0}
+.name-inp{
+  flex:1;border:1.5px solid var(--gray-200);border-radius:var(--r-md);
+  padding:9px 14px;font-size:15px;font-family:'Tajawal',sans-serif;
+  color:var(--gray-800);background:var(--gray-50);transition:border-color .2s,box-shadow .2s;
+  text-align:right;direction:rtl;
+}
+.name-inp:focus{outline:none;border-color:var(--g-main);box-shadow:0 0 0 3px rgba(4,120,87,.12)}
+
+/* ── Pitch ── */
+.pitch-wrap{
+  background:linear-gradient(180deg,#87ceeb 0%,#87ceeb 45%,#2d6e2d 45%,#1a5c1a 100%);
+  border-radius:var(--r-md);padding:16px;margin-bottom:16px;
+  text-align:center;position:relative;overflow:hidden;min-height:120px;
+}
+.pitch-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 1px,transparent 1px,transparent 30px);
+  pointer-events:none;
+}
+.goal-post{display:inline-block;width:110px;height:65px;border:3.5px solid #fff;border-bottom:none;border-radius:3px 3px 0 0;position:relative;margin-top:30px}
+.net-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(4,1fr)}
+.net-grid div{border:.5px solid rgba(255,255,255,.25)}
+.keeper-body{width:13px;height:38px;background:#e74c3c;border-radius:3px;position:absolute;bottom:-40px;left:50%;transform:translateX(-50%)}
+.keeper-body::before{content:'';width:15px;height:15px;background:#fcd34d;border-radius:50%;position:absolute;top:-17px;left:-1px}
+.pitch-lbl{position:absolute;top:6px;left:12px;font-size:10px;color:rgba(255,255,255,.6);font-family:'Fira Code',monospace;background:rgba(0,0,0,.3);padding:2px 8px;border-radius:999px}
+
+/* ── Alice editor ── */
+.alice-bg{background:#dbeafe;border:1.5px solid #bfdbfe;border-radius:var(--r-md);padding:12px}
+.while-box{background:#e0f2fe;border:1.5px solid #7dd3fc;border-radius:var(--r-sm);padding:10px 14px;margin-bottom:10px}
+.while-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.kw{background:#1e3a5f;color:#93c5fd;border-radius:5px;padding:3px 10px;font-size:13px;font-weight:700;font-family:'Fira Code',monospace}
+.kchip{background:#374151;color:#e5e7eb;border-radius:5px;padding:3px 10px;font-size:13px;font-weight:700;font-family:'Fira Code',monospace}
+.wrow{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}
+.rlbl{font-size:12px;font-weight:700;color:#1e3a5f;min-width:52px;text-align:right}
+.none-chip{background:#fee2e2;color:#991b1b;border-radius:5px;padding:3px 10px;font-size:12px;font-style:italic}
+.atabs{display:flex;gap:4px;margin-bottom:-1px}
+.atab{padding:6px 14px;border-radius:7px 7px 0 0;font-size:11px;font-weight:500;border:1.5px solid #bfdbfe;border-bottom:none;background:#dbeafe;color:#1e40af;display:flex;align-items:center;gap:5px}
+.atab.act{background:#fefce8;border-color:#fbbf24}
+.db{width:9px;height:9px;border-radius:50%;background:#3b82f6}
+.da{background:#f59e0b}
+.mpanel{background:#fefce8;border:1.5px solid #fbbf24;border-radius:0 0 var(--r-sm) var(--r-sm);padding:12px 14px}
+.mname{font-weight:700;color:#78350f;font-family:'Fira Code',monospace;font-size:13px}
+.mita{font-style:italic;color:#a16207;font-size:12px}
+.crow{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:8px}
+.cfx{height:28px;padding:0 10px;background:#fde68a;border:1px solid #f59e0b;border-radius:5px;font-size:12px;font-weight:700;color:#92400e;display:flex;align-items:center;font-family:'Fira Code',monospace}
+
+/* ── Drop slots ── */
+.drop-slot{
+  position:relative;min-width:100px;height:28px;
+  border:2px dashed #7dd3fc;border-radius:6px;
+  background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#64748b;cursor:pointer;transition:all .2s;
+}
+.drop-slot:hover,.drop-slot.over{border-color:#0369a1;background:#e0f7fa}
+.drop-slot.filled{border-style:solid;border-color:var(--g-main);background:#ecfdf5;font-weight:700;color:var(--g-dark);font-size:11px;font-family:'Fira Code',monospace}
+.drop-slot.wrong{border-color:var(--red)!important;background:var(--red-pale)!important}
+.drop-slot.correct-mark{border-color:#059669!important;background:#d1fae5!important}
+#slot-during{min-width:160px;height:32px}
+
+.cmd-slot{
+  position:relative;min-width:70px;height:28px;
+  border:2px dashed #d97706;border-radius:5px;
+  background:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:#92400e;cursor:pointer;transition:all .2s;
+}
+.cmd-slot:hover,.cmd-slot.over{border-color:#92400e;background:#fef9c3}
+.cmd-slot.filled{border-style:solid;border-color:#92400e;background:#fefce8;font-weight:700;color:#78350f;font-family:'Fira Code',monospace;font-size:10px}
+.cmd-slot.wrong{border-color:var(--red)!important;background:var(--red-pale)!important}
+.cmd-slot.correct-mark{border-color:#059669!important;background:#d1fae5!important}
+
+/* X button on filled slots */
+.slot-x{
+  display:none;position:absolute;
+  top:-8px;right:-8px;
+  width:17px;height:17px;border-radius:50%;
+  background:var(--g-main);color:#fff;
+  font-size:11px;line-height:17px;text-align:center;
+  cursor:pointer;font-family:sans-serif;z-index:5;
+}
+.drop-slot.filled .slot-x,.cmd-slot.filled .slot-x{display:block}
+
+/* ── Tokens ── */
+.tok-sec{margin-bottom:16px}
+.tok-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px}
+.tok-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.token{
+  padding:8px 16px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);
+  border-radius:var(--r-md);font-size:13px;font-weight:700;color:#fff;cursor:grab;
+  user-select:none;transition:all .2s;display:flex;align-items:center;gap:7px;
+  font-family:'Fira Code',monospace;
+}
+.token:hover{background:rgba(16,185,129,.2);border-color:var(--g-light);transform:translateY(-2px)}
+.token.selected{background:rgba(16,185,129,.3);border-color:var(--g-light);border-width:2px;box-shadow:0 0 0 3px rgba(16,185,129,.2)}
+.token.used{opacity:.25;cursor:not-allowed;transform:none!important;box-shadow:none!important;pointer-events:none}
+.tok-dot{width:8px;height:8px;border-radius:50%;background:var(--g-light);flex-shrink:0}
+.token.used .tok-dot{background:var(--gray-400)}
+
+/* ── Actions ── */
+.actions{display:flex;gap:10px;margin-bottom:14px}
+.btn-check{
+  flex:1;padding:12px;background:var(--g-main);color:#fff;border:none;
+  border-radius:var(--r-md);font-size:15px;font-weight:700;font-family:'Tajawal',sans-serif;
+  cursor:pointer;transition:background .2s,transform .1s;
+}
+.btn-check:hover{background:var(--g-mid)}.btn-check:active{transform:scale(.98)}
+.btn-reset{
+  padding:12px 18px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);
+  border:1.5px solid rgba(255,255,255,.2);border-radius:var(--r-md);font-size:14px;
+  font-weight:500;font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;
+}
+.btn-reset:hover{background:rgba(255,255,255,.14);color:#fff}
+
+/* ── Result banner ── */
+.result-banner{
+  border-radius:var(--r-md);padding:16px 18px;text-align:center;
+  font-size:15px;font-weight:700;direction:rtl;margin-bottom:14px;
+  display:none;animation:sli .35s ease;
+}
+@keyframes sli{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.result-banner.show{display:block}
+.result-banner.success{background:#d1fae5;color:#065f46;border:1.5px solid #6ee7b7}
+.result-banner.partial{background:#fef3c7;color:#92400e;border:1.5px solid #fcd34d}
+.result-banner.fail{background:#fee2e2;color:#991b1b;border:1.5px solid #fca5a5}
+.enc-emoji{font-size:28px;margin-bottom:6px;display:block}
+.enc-text{font-size:16px;font-weight:700;display:block;margin-bottom:4px}
+.enc-score{font-size:13px;font-weight:400;display:block;opacity:.8}
+.save-st{font-size:11px;opacity:.6;margin-top:6px;display:block;font-family:'Fira Code',monospace}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.7);
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:#0f1f2e;border:1px solid rgba(147,197,253,.2);
+  border-radius:var(--r-xl);width:100%;max-width:580px;
+  transform:translateY(20px);transition:transform .25s;overflow:hidden;
+}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-head{
+  background:rgba(2,36,64,.95);padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(147,197,253,.12);
+}
+.modal-head-left{display:flex;align-items:center;gap:10px}
+.modal-head-title{font-size:15px;font-weight:700;color:#93c5fd}
+.modal-close{
+  width:30px;height:30px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);
+  font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.modal-close:hover{background:rgba(255,255,255,.15);color:#fff}
+.modal-body{padding:20px}
+
+/* pass form */
+.pass-hint{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:12px;direction:rtl}
+.pass-form{display:flex;gap:8px;direction:rtl}
+.pass-inp{
+  flex:1;border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);
+  padding:10px 14px;font-size:14px;font-family:'Tajawal',sans-serif;
+  background:rgba(255,255,255,.06);color:#fff;transition:border-color .2s;
+}
+.pass-inp:focus{outline:none;border-color:var(--g-light)}
+.btn-login{
+  padding:10px 18px;background:#1d4ed8;color:#fff;border:none;
+  border-radius:var(--r-md);font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;
+  cursor:pointer;white-space:nowrap;transition:background .2s;
+}
+.btn-login:hover{background:#1e40af}
+.pass-err{color:#fca5a5;font-size:12px;margin-top:8px;font-family:'Fira Code',monospace;display:none}
+
+/* teacher entries */
+.t-panel{display:none;margin-top:18px}
+.t-panel.vis{display:block}
+.t-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.t-panel-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.65)}
+.btn-refresh{
+  padding:6px 13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  border-radius:var(--r-md);color:rgba(255,255,255,.5);font-size:12px;
+  font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;
+}
+.btn-refresh:hover{background:rgba(255,255,255,.12);color:#fff}
+.t-entries{display:grid;gap:10px;max-height:55vh;overflow-y:auto;padding-left:2px}
+.t-entries::-webkit-scrollbar{width:4px}
+.t-entries::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:4px}
+
+.ecard{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--r-md);padding:12px 14px;
+}
+.ecard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:8px}
+.ecard-info{flex:1;min-width:0}
+.ename{font-size:14px;font-weight:700;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.etime{font-size:11px;color:rgba(255,255,255,.35);font-family:'Fira Code',monospace;margin-top:2px}
+.ecard-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.spill{border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700}
+.sp-ok{background:#d1fae5;color:#065f46}
+.sp-part{background:#fef3c7;color:#92400e}
+.sp-fail{background:#fee2e2;color:#991b1b}
+.btn-del{
+  width:28px;height:28px;border-radius:50%;
+  border:1px solid rgba(220,38,38,.4);background:rgba(220,38,38,.1);
+  color:#f87171;font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.btn-del:hover{background:rgba(220,38,38,.28);border-color:#f87171;color:#fff}
+.btn-del:disabled{opacity:.4;cursor:not-allowed}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;direction:rtl}
+.erow{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.5);font-family:'Fira Code',monospace}
+.elbl{color:rgba(255,255,255,.3);min-width:58px}
+.eval{color:rgba(255,255,255,.78)}
+.tick{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.t-ok{background:#d1fae5;color:#065f46}.t-no{background:#fee2e2;color:#991b1b}
+.no-entries{text-align:center;color:rgba(255,255,255,.3);font-size:13px;padding:28px}
+.loading-t{text-align:center;color:rgba(255,255,255,.3);font-size:12px;padding:18px;font-family:'Fira Code',monospace}
+.t-err{text-align:center;font-size:11px;color:#fca5a5;margin-top:8px;font-family:'Fira Code',monospace}
+.sec-lbl{font-size:11px;font-weight:700;color:rgba(255,255,255,.38);letter-spacing:.7px;text-transform:uppercase;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- Top bar: hero center, teacher button right -->
+<div class="top-bar">
+  <div class="top-spacer"></div>
+
+  <div class="hero">
+    <div class="hero-badge"><div class="hero-badge-dot"></div>Alice Programming Activity</div>
+    <div class="hero-title">لنلخص <span>معاً</span></div>
+    <div class="hero-sub">GoalKeeper.MoveLeft — Drag &amp; Drop</div>
+  </div>
+
+  <button class="btn-teacher" onclick="openTeacherModal()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    لوحة المعلمة
+  </button>
+</div>
+
+<!-- Name -->
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon" style="background:#ecfdf5">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#047857" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+    <div class="card-title">بيانات الطالبة</div>
+  </div>
+  <div class="card-body">
+    <div class="name-row">
+      <label class="name-lbl" for="studentName">الاسم:</label>
+      <input class="name-inp" type="text" id="studentName" autocomplete="off"/>
+    </div>
+  </div>
+</div>
+
+<!-- Pitch -->
+<div class="pitch-wrap">
+  <div class="pitch-lbl">alice world</div>
+  <div class="goal-post">
+    <div class="net-grid">
+      <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>
+    <div class="keeper-body"></div>
+  </div>
+</div>
+
+<!-- Alice editor -->
+<div class="sec-lbl">محرر الكود</div>
+<div class="card">
+  <div class="card-body" style="padding:14px">
+    <div class="alice-bg">
+      <div class="while-box">
+        <div class="while-hdr">
+          <div class="kw">While</div>
+          <div class="kchip">← left arrow</div>
+          <span style="font-size:13px;color:#1e3a5f;font-weight:500">is pressed</span>
+        </div>
+        <div class="wrow">
+          <span class="rlbl">Begin:</span>
+          <span class="none-chip">&lt;None&gt;</span>
+        </div>
+        <div class="wrow">
+          <span class="rlbl">During:</span>
+          <div class="drop-slot" id="slot-during" data-ans="GoalKeeper.MoveLeft"
+               ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dp(event,this)"
+               onclick="slotClk(this)">
+            <span class="slot-ph">⋯</span>
+            <span class="slot-x" onclick="clearSlot('slot-during');event.stopPropagation()">×</span>
+          </div>
+        </div>
+        <div class="wrow">
+          <span class="rlbl">End:</span>
+          <span class="none-chip">&lt;None&gt;</span>
+        </div>
+      </div>
+      <div class="atabs">
+        <div class="atab"><div class="db"></div>world.my first method</div>
+        <div class="atab act"><div class="db da"></div>GoalKeeper.MoveLeft</div>
+      </div>
+      <div class="mpanel">
+        <div style="margin-bottom:4px"><span class="mname">GoalKeeper.MoveLeft</span>&nbsp;<span class="mita">No parameters</span></div>
+        <div class="mita" style="margin-bottom:6px">No variables</div>
+        <div class="crow">
+          <div class="cmd-slot" id="slot-obj" data-ans="GoalKeeper"
+               ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dp(event,this)"
+               onclick="slotClk(this)">
+            <span class="slot-ph" style="font-size:10px">كائن</span>
+            <span class="slot-x" onclick="clearSlot('slot-obj');event.stopPropagation()">×</span>
+          </div>
+          <div class="cfx">move</div>
+          <div class="cmd-slot" id="slot-dir" data-ans="left"
+               ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dp(event,this)"
+               onclick="slotClk(this)">
+            <span class="slot-ph" style="font-size:10px">اتجاه</span>
+            <span class="slot-x" onclick="clearSlot('slot-dir');event.stopPropagation()">×</span>
+          </div>
+          <div class="cfx">0.4 meters</div>
+          <div class="cmd-slot" id="slot-sty" data-ans="style = abruptly"
+               ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dp(event,this)"
+               onclick="slotClk(this)">
+            <span class="slot-ph" style="font-size:10px">أسلوب</span>
+            <span class="slot-x" onclick="clearSlot('slot-sty');event.stopPropagation()">×</span>
+          </div>
+          <div class="cmd-slot" id="slot-dur" data-ans="duration = 0.1 seconds"
+               ondragover="dov(event,this)" ondragleave="dlv(this)" ondrop="dp(event,this)"
+               onclick="slotClk(this)">
+            <span class="slot-ph" style="font-size:10px">مدة</span>
+            <span class="slot-x" onclick="clearSlot('slot-dur');event.stopPropagation()">×</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tokens -->
+<div class="tok-sec">
+  <div class="tok-title">البطاقات — اسحبي أو اضغطي ثم اضغطي على المكان</div>
+  <div class="tok-grid">
+    <div class="token" id="tk0" draggable="true" ondragstart="ds(event,'GoalKeeper.MoveLeft','tk0')" onclick="tc('GoalKeeper.MoveLeft','tk0')"><div class="tok-dot"></div>GoalKeeper.MoveLeft</div>
+    <div class="token" id="tk1" draggable="true" ondragstart="ds(event,'GoalKeeper','tk1')" onclick="tc('GoalKeeper','tk1')"><div class="tok-dot"></div>GoalKeeper</div>
+    <div class="token" id="tk2" draggable="true" ondragstart="ds(event,'left','tk2')" onclick="tc('left','tk2')"><div class="tok-dot"></div>left</div>
+    <div class="token" id="tk3" draggable="true" ondragstart="ds(event,'style = abruptly','tk3')" onclick="tc('style = abruptly','tk3')"><div class="tok-dot"></div>style = abruptly</div>
+    <div class="token" id="tk4" draggable="true" ondragstart="ds(event,'duration = 0.1 seconds','tk4')" onclick="tc('duration = 0.1 seconds','tk4')"><div class="tok-dot"></div>duration = 0.1 seconds</div>
+    <div class="token" id="tk5" draggable="true" ondragstart="ds(event,'right','tk5')" onclick="tc('right','tk5')"><div class="tok-dot"></div>right</div>
+    <div class="token" id="tk6" draggable="true" ondragstart="ds(event,'Begin','tk6')" onclick="tc('Begin','tk6')"><div class="tok-dot"></div>Begin</div>
+  </div>
+</div>
+
+<!-- Result -->
+<div class="result-banner" id="resultBanner"></div>
+
+<!-- Actions -->
+<div class="actions">
+  <button class="btn-check" onclick="checkAnswers()">تحقق من إجاباتي ✓</button>
+  <button class="btn-reset" onclick="resetAll()">إعادة ↺</button>
+</div>
+
+
+<!-- ═══ TEACHER MODAL ═══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93c5fd" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <div class="modal-head-title">لوحة المعلمة</div>
+      </div>
+      <button class="modal-close" onclick="closeTeacherModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <!-- Password section -->
+      <div id="passSection">
+        <div class="pass-hint">أدخلي كلمة السر للوصول إلى إجابات الطلاب</div>
+        <div class="pass-form">
+          <input class="pass-inp" type="password" id="teacherPass"
+                 onkeydown="if(event.key==='Enter')checkPass()"/>
+          <button class="btn-login" onclick="checkPass()">دخول</button>
+        </div>
+        <div class="pass-err" id="passErr">كلمة السر غير صحيحة، حاولي مرة أخرى</div>
+      </div>
+      <!-- Entries panel -->
+      <div class="t-panel" id="tPanel">
+        <div class="t-panel-head">
+          <div class="t-panel-title">إجابات الطلاب</div>
+          <button class="btn-refresh" onclick="loadEntries()">⟳ تحديث</button>
+        </div>
+        <div class="t-entries" id="tEntries"><div class="loading-t">جارٍ التحميل...</div></div>
+        <div class="t-err" id="tErr" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const FB   = 'https://schoolproject-97946-default-rtdb.firebaseio.com/alice_activity';
+const PASS = 'alice2024';
+
+const SLOT_IDS = ['slot-during','slot-obj','slot-dir','slot-sty','slot-dur'];
+const SLOT_ANS = {
+  'slot-during':'GoalKeeper.MoveLeft',
+  'slot-obj':   'GoalKeeper',
+  'slot-dir':   'left',
+  'slot-sty':   'style = abruptly',
+  'slot-dur':   'duration = 0.1 seconds'
+};
+const SLOT_LABELS = {
+  'slot-during':'During','slot-obj':'الكائن',
+  'slot-dir':'الاتجاه','slot-sty':'الأسلوب','slot-dur':'المدة'
+};
+
+const MSGS = {
+  5:['رائعة! أنتِ نجمة البرمجة! ⭐','ممتاز! أكملتِ الكود بشكل مثالي!','إجاباتك كلها صحيحة، برافو عليكِ!','أحسنتِ! لديكِ موهبة في Alice!'],
+  4:['جيد جداً! إجابة واحدة فقط تحتاج مراجعة 💪','تقريباً! أنتِ على الطريق الصحيح!','أداء رائع! راجعي إجابة واحدة فقط 🌟'],
+  3:['جيد! نصف الإجابات صحيحة، واصلي المحاولة! 🎯','مرحى! راجعي الصورة وحاولي مجدداً!'],
+  2:['لا بأس، استمري في المحاولة! 🔄','راجعي الدرس وحاولي مرة أخرى 💡'],
+  1:['لا تيأسي! كل خطأ هو تعلم جديد 💡','راجعي الصورة بعناية وحاولي مجدداً 🚀'],
+  0:['حاولي مرة أخرى بعد مراجعة الدرس! 📖','لا بأس، ابدئي من جديد بعد مراجعة المثال!']
+};
+function randMsg(n){ const a=MSGS[n]||MSGS[0]; return a[Math.floor(Math.random()*a.length)]; }
+
+const EMOJIS={5:'🏆',4:'🌟',3:'🎯',2:'💪',1:'📖',0:'🔄'};
+
+const state={};   // slotId→value
+const slotTok={}; // slotId→tokId
+let dragVal=null,dragTokId=null,selTok=null;
+
+/* ── Drag ── */
+function ds(e,val,id){ dragVal=val; dragTokId=id; e.dataTransfer.effectAllowed='move'; }
+function dov(e,el){ e.preventDefault(); el.classList.add('over'); }
+function dlv(el){ el.classList.remove('over'); }
+function dp(e,el){ e.preventDefault(); el.classList.remove('over'); if(dragVal) place(dragVal,dragTokId,el); dragVal=null; dragTokId=null; }
+
+/* ── Token click ── */
+function tc(val,id){
+  const el=document.getElementById(id);
+  if(el.classList.contains('used')) return;
+  if(selTok){
+    document.getElementById(selTok.id).classList.remove('selected');
+    if(selTok.id===id){selTok=null;return;}
+  }
+  el.classList.add('selected');
+  selTok={val,id};
+}
+
+/* ── Slot click ── */
+function slotClk(slot){
+  if(state[slot.id]!==undefined){ clearSlot(slot.id); return; }
+  if(!selTok) return;
+  place(selTok.val,selTok.id,slot);
+  document.getElementById(selTok.id).classList.remove('selected');
+  selTok=null;
+}
+
+/* ── Place value ── */
+function place(val,tokId,slotEl){
+  const slotId=slotEl.id;
+  if(state[slotId]!==undefined) clearSlot(slotId);
+  if(tokId){
+    const t=document.getElementById(tokId);
+    if(t&&t.classList.contains('used')) return;
+    if(t) t.classList.add('used');
+    slotTok[slotId]=tokId;
+  }
+  state[slotId]=val;
+  slotEl.classList.add('filled');
+  slotEl.classList.remove('over','wrong','correct-mark');
+  const ph=slotEl.querySelector('.slot-ph');
+  if(ph){ ph.textContent=val; ph.style.fontSize=''; }
+  clearResult();
+}
+
+/* ── Clear slot ── */
+function clearSlot(slotId){
+  const oldTok=slotTok[slotId];
+  if(oldTok){ const t=document.getElementById(oldTok); if(t) t.classList.remove('used'); delete slotTok[slotId]; }
+  delete state[slotId];
+  const el=document.getElementById(slotId);
+  el.classList.remove('filled','wrong','correct-mark');
+  const ph=el.querySelector('.slot-ph');
+  if(ph){ ph.textContent='⋯'; ph.style.fontSize='10px'; }
+  clearResult();
+  selTok=null;
+}
+
+function clearResult(){
+  const b=document.getElementById('resultBanner');
+  b.className='result-banner'; b.innerHTML='';
+}
+
+/* ── Check ── */
+async function checkAnswers(){
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){ alert('يرجى كتابة اسمك أولاً'); document.getElementById('studentName').focus(); return; }
+  let correct=0; const details={};
+  SLOT_IDS.forEach(id=>{
+    const ok=state[id]===SLOT_ANS[id];
+    if(ok) correct++;
+    details[id]={given:state[id]||'—',ok};
+    const el=document.getElementById(id);
+    if(state[id]!==undefined){ el.classList.remove('wrong','correct-mark'); el.classList.add(ok?'correct-mark':'wrong'); }
+  });
+  const total=SLOT_IDS.length;
+  const banner=document.getElementById('resultBanner');
+  banner.classList.add('show');
+  const emoji=EMOJIS[correct]||'💪';
+  const msg=randMsg(correct);
+  const cls=correct===total?'success':correct>=Math.ceil(total/2)?'partial':'fail';
+  banner.className=`result-banner show ${cls}`;
+  banner.innerHTML=`<span class="enc-emoji">${emoji}</span><span class="enc-text">${msg}</span><span class="enc-score">${correct} من ${total} إجابات صحيحة</span><span class="save-st" id="saveStatus">جارٍ الحفظ...</span>`;
+
+  try{
+    const payload={name,correct,total,details,time:new Date().toLocaleString('ar-SA',{hour12:false}),ts:Date.now()};
+    const res=await fetch(`${FB}/${encodeURIComponent(name)}.json`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const ss=document.getElementById('saveStatus');
+    if(ss) ss.textContent=res.ok?'✓ تم حفظ إجاباتك':'⚠ فشل الحفظ';
+  } catch(e){ const ss=document.getElementById('saveStatus'); if(ss) ss.textContent='⚠ تعذّر الاتصال'; }
+}
+
+/* ── Reset ── */
+function resetAll(){
+  SLOT_IDS.forEach(id=>{
+    if(state[id]!==undefined) clearSlot(id);
+    const el=document.getElementById(id);
+    el.classList.remove('filled','wrong','correct-mark','over');
+  });
+  Object.keys(state).forEach(k=>delete state[k]);
+  Object.keys(slotTok).forEach(k=>delete slotTok[k]);
+  document.querySelectorAll('.token').forEach(t=>t.classList.remove('used','selected'));
+  selTok=null; clearResult();
+}
+
+/* ── Modal ── */
+let teacherAuthed=false;
+function openTeacherModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+  if(!teacherAuthed) setTimeout(()=>document.getElementById('teacherPass').focus(),200);
+  else loadEntries();
+}
+function closeTeacherModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
+function overlayClick(e){ if(e.target===document.getElementById('modalOverlay')) closeTeacherModal(); }
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeTeacherModal(); });
+
+function checkPass(){
+  const p=document.getElementById('teacherPass').value;
+  if(p===PASS){
+    teacherAuthed=true;
+    document.getElementById('passSection').style.display='none';
+    document.getElementById('tPanel').classList.add('vis');
+    document.getElementById('teacherPass').value='';
+    loadEntries();
+  } else {
+    const err=document.getElementById('passErr');
+    err.style.display='block';
+    document.getElementById('teacherPass').value='';
+    document.getElementById('teacherPass').focus();
+    setTimeout(()=>err.style.display='none',3000);
+  }
+}
+
+/* ── Load entries ── */
+async function loadEntries(){
+  const cont=document.getElementById('tEntries');
+  const errEl=document.getElementById('tErr');
+  cont.innerHTML='<div class="loading-t">جارٍ التحميل...</div>';
+  errEl.style.display='none';
+  try{
+    const res=await fetch(`${FB}.json`);
+    if(!res.ok) throw new Error('fetch failed');
+    const data=await res.json();
+    if(!data){ cont.innerHTML='<div class="no-entries">لا توجد إجابات بعد</div>'; return; }
+    const entries=Object.entries(data).sort((a,b)=>b[1].ts-a[1].ts);
+    cont.innerHTML='';
+    entries.forEach(([key,e])=>{
+      const pct=e.correct/e.total;
+      const pillCls=pct===1?'sp-ok':pct>=.5?'sp-part':'sp-fail';
+      const card=document.createElement('div');
+      card.className='ecard';
+      card.id='ec-'+key;
+      card.innerHTML=`
+        <div class="ecard-top">
+          <div class="ecard-info">
+            <div class="ename">${esc(e.name)}</div>
+            <div class="etime">${esc(e.time||'')}</div>
+          </div>
+          <div class="ecard-actions">
+            <div class="spill ${pillCls}">${e.correct}/${e.total}</div>
+            <button class="btn-del" title="حذف إجابة هذه الطالبة" onclick="deleteEntry('${esc(key)}',this)">×</button>
+          </div>
+        </div>
+        <div class="egrid">
+          ${Object.entries(e.details||{}).map(([sid,d])=>`
+            <div class="erow">
+              <div class="tick ${d.ok?'t-ok':'t-no'}">${d.ok?'✓':'✗'}</div>
+              <span class="elbl">${SLOT_LABELS[sid]||sid}:</span>
+              <span class="eval">${esc(d.given)}</span>
+            </div>
+          `).join('')}
+        </div>`;
+      cont.appendChild(card);
+    });
+  } catch(e){
+    cont.innerHTML='<div class="no-entries">تعذّر التحميل</div>';
+    errEl.textContent='خطأ: '+e.message; errEl.style.display='block';
+  }
+}
+
+/* ── Delete entry ── */
+async function deleteEntry(key,btn){
+  if(!confirm(`هل تريدين حذف إجابة "${key}"؟`)) return;
+  btn.disabled=true; btn.textContent='...';
+  try{
+    const res=await fetch(`${FB}/${encodeURIComponent(key)}.json`,{method:'DELETE'});
+    if(res.ok){
+      const card=document.getElementById('ec-'+key);
+      if(card){
+        card.style.transition='opacity .3s,transform .3s';
+        card.style.opacity='0';card.style.transform='translateX(20px)';
+        setTimeout(()=>card.remove(),320);
+      }
+    } else { alert('فشل الحذف'); btn.disabled=false; btn.textContent='×'; }
+  } catch(e){ alert('تعذّر الاتصال'); btn.disabled=false; btn.textContent='×'; }
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+</body>
+</html>
